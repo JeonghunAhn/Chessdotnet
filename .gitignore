@@ -5,6 +5,9 @@ obj/
 # Node dependencies
 node_modules/
 
+# Static deployment output
+dist/
+
 # Fable generated output
 fable_modules/
 *.fs.js
@@ -15,6 +18,9 @@ fable_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# PST tuner cache
+tools/PstTuner/data/
 
 # Editor and OS files
 .vs/

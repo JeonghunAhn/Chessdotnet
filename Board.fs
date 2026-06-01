@@ -45,11 +45,32 @@ let initialBoard () =
 let initialModel () =
     { Board = initialBoard ()
       SelectedSquare = None
-      LegalTargets = []
-      SideToMove = White }
+      LegalMoves = []
+      SideToMove = White
+      CastlingRights =
+        { WhiteKingSide = true
+          WhiteQueenSide = true
+          BlackKingSide = true
+          BlackQueenSide = true }
+      EnPassantTarget = None
+      PendingPromotion = None
+      GameResult = None
+      Clock =
+        { WhiteRemainingMs = 5.0 * 60.0 * 1000.0
+          BlackRemainingMs = 5.0 * 60.0 * 1000.0
+          LastTickMs = None
+          Started = false }
+      Scene = MainMenu
+      History = []
+      HalfmoveClock = 0
+      PositionHistory = []
+      MoveHistory = []
+      ComputerThinking = false
+      LastSearch = None
+      GameMode = LocalGame
+      TimeControlMinutes = 5 }
 
-let movePiece fromSquare toSquare (board: Board) =
+let setPiece square piece (board: Board) =
     let next = Array.copy board
-    next.[squareIndex toSquare] <- next.[squareIndex fromSquare]
-    next.[squareIndex fromSquare] <- None
+    next.[squareIndex square] <- piece
     next

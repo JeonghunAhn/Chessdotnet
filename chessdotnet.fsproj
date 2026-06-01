@@ -9,7 +9,13 @@
     <Compile Include="Types.fs" />
     <Compile Include="Board.fs" />
     <Compile Include="Rules.fs" />
+    <Compile Include="tools/PstTuner/generated/GeneratedPst.fs" />
+    <Compile Include="Evaluation.fs" />
+    <Compile Include="Engine.fs" />
+    <Compile Include="OpeningBook.fs" />
+    <Compile Include="EngineWorker.fs" />
     <Compile Include="Game.fs" />
+    <Compile Include="Ui.fs" />
     <Compile Include="Input.fs" />
     <Compile Include="Render.fs" />
     <Compile Include="Program.fs" />
