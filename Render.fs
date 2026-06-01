@@ -9,6 +9,7 @@ open Chess.Ui
 
 let private lightSquare = "#f0d9b5"
 let private darkSquare = "#b58863"
+let private lastMoveSquare = "rgba(213, 168, 55, 0.58)"
 let private selectedSquare = "rgba(246, 246, 105, 0.65)"
 let private legalMoveDot = "rgba(36, 38, 38, 0.35)"
 let private legalCaptureRing = "rgba(36, 38, 38, 0.5)"
@@ -67,12 +68,20 @@ let private drawSymbol piece x y fontSize (ctx: CanvasRenderingContext2D) =
     ctx.fillStyle <- U3.Case1 (if piece.Color = White then whitePiece else blackPiece)
     ctx.fillText (pieceSymbol piece, x, y)
 
+let private isLastMoveSquare square model =
+    model.MoveHistory
+    |> List.tryLast
+    |> Option.exists (fun move -> move.From = square || move.To = square)
+
 let private drawSquare rank file square model ctx =
     let x = float file * squareSize
     let y = float rank * squareSize
     let squareColor = if (rank + file) % 2 = 0 then lightSquare else darkSquare
 
     fillRect squareColor x y squareSize squareSize ctx
+
+    if isLastMoveSquare square model then
+        fillRect lastMoveSquare x y squareSize squareSize ctx
 
     match model.SelectedSquare with
     | Some selected when selected = square ->
@@ -227,6 +236,40 @@ let private drawPromotion model ctx =
                 48
                 ctx)
 
+let private gameResultMessage result =
+    match result with
+    | Checkmate winner -> sprintf "%s wins" (colorName winner), "Checkmate"
+    | Timeout winner -> sprintf "%s wins" (colorName winner), "Time expired"
+    | Stalemate -> "Draw", "Stalemate"
+    | Draw ThreefoldRepetition -> "Draw", "Threefold repetition"
+    | Draw FiftyMoveRule -> "Draw", "50-move rule"
+    | Draw InsufficientMaterial -> "Draw", "Insufficient material"
+
+let private drawGameResult model (ctx: CanvasRenderingContext2D) =
+    match model.GameResult with
+    | None -> ()
+    | Some result ->
+        let title, detail = gameResultMessage result
+        let boxWidth = 520.0
+        let boxHeight = 184.0
+        let boxX = (canvasSize - boxWidth) / 2.0
+        let boxY = (canvasSize - boxHeight) / 2.0
+
+        fillRect "rgba(20, 24, 25, 0.68)" 0.0 0.0 canvasSize canvasSize ctx
+        fillRect panelBackground boxX boxY boxWidth boxHeight ctx
+
+        ctx.textAlign <- "center"
+        ctx.textBaseline <- "middle"
+        ctx.fillStyle <- U3.Case1 mutedText
+        ctx.font <- "bold 14px Arial, sans-serif"
+        ctx.fillText ("GAME OVER", canvasSize / 2.0, boxY + 34.0)
+        ctx.fillStyle <- U3.Case1 panelText
+        ctx.font <- "bold 44px Arial, sans-serif"
+        ctx.fillText (title, canvasSize / 2.0, boxY + 92.0)
+        ctx.fillStyle <- U3.Case1 buttonBackground
+        ctx.font <- "bold 18px Arial, sans-serif"
+        ctx.fillText (detail, canvasSize / 2.0, boxY + 142.0)
+
 let private drawMenu model ctx =
     fillRect panelBackground 0.0 0.0 sceneWidth sceneHeight ctx
     ctx.textAlign <- "center"
@@ -268,3 +311,4 @@ let render model (ctx: CanvasRenderingContext2D) =
         drawBoard model ctx
         drawPanel model ctx
         drawPromotion model ctx
+        drawGameResult model ctx
