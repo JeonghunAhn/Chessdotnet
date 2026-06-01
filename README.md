@@ -5,30 +5,31 @@ Can play with F# builted evaluate engine or 2 player chess game.
 
 ## Getting Started
 
-### Play
+### Play on web
 Can access by https://jeonghunahn.github.io/Chessdotnet/
 ### To run on local
 ### Prerequisites
 - [.NET 10 SDK](https://dotnet.microsoft.com/download)  
   Verify with: `dotnet --version` (should show `10.x.x`)
 - [node.js](https://nodejs.org/ko/download)
-  Verify with: `node -v`
+  Verify with: `node -version`
 
-```bash
+### Install Dependencies
+
+```powershell
 dotnet tool restore
 dotnet restore
-npm ci
-dotnet fable
-npm run dev
+npm.cmd ci
 ```
 
-### Build
-```bash
-dotnet build
+```powershell
+dotnet fable watch --run npm.cmd run dev
 ```
-### Run
-```bash
-dotnet fable watch --verbose --run npx vite
+
+Then open:
+
+```text
+http://localhost:5173/Chessdotnet/
 ```
 
 ## How to Play
