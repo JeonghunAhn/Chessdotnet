@@ -118,7 +118,7 @@ type GameResult =
 | `Program` | Connects browser events, rendering, game updates, and the engine worker |
 
 ## LLM Usage
-**Used LLM for** : Debuging and adding features after generate initial chess board structure, HTML and button ui. Making simple engine and tuned Piece-squre table by using 5,000 positions sampled from CC0 Lichess Stockfish evaluation dataset. While my engine was calculating, web ui stops, so I asked how to fix it and llm used web worker to solve the problem.
+**Used LLM for** : Debuging and adding features after generate initial chess board structure. HTML and button ui. Making simple engine and tuned Piece-squre table by using 5,000 positions sampled from CC0 Lichess Stockfish evaluation dataset. While my engine was calculating, web ui stops, so I asked how to fix it and llm used web worker to solve the problem.
 
 **Changed or reprompt** : I asked to make time limits before making game start button and dividing scenes, so time limit did not worked properly because it didn't know when to start white side player's time count. I changed the prompt to make start button and start time count.
 
